@@ -23,11 +23,17 @@ class BookRepository {
      * )
      */
     private val booksList = listOf(
-        Book(isbn = "", title = "Clean Code", nbPages = 0),
-        Book(isbn = "", title = "The Pragmatic Programmer", nbPages = 0),
-        Book(isbn = "", title = "Design Patterns", nbPages = 0),
-        Book(isbn = "", title = "Refactoring", nbPages = 0),
-        Book(isbn = "", title = "Head First Design Patterns", nbPages = 0)
+        Book(isbn = "978-0-13-235088-4", title = "Clean Code", nbPages = 464),
+        Book(isbn = "978-0-13-595705-9", title = "The Pragmatic Programmer", nbPages = 320),
+        Book(isbn = "978-0-20-163361-0", title = "Design Patterns", nbPages = 395),
+        Book(isbn = "978-0-20-148567-7", title = "Refactoring", nbPages = 431),
+        Book(isbn = "978-0-59-600712-6", title = "Head First Design Patterns", nbPages = 688),
+
+        Book(isbn = "978-0-13-449416-6", title = "Clean Architecture", nbPages = 432),
+        Book(isbn = "978-0-32-112521-7", title = "Domain-Driven Design", nbPages = 560),
+        Book(isbn = "978-0-13-117705-5", title = "Working Effectively with Legacy Code", nbPages = 456),
+        Book(isbn = "978-0-73-561967-8", title = "Code Complete", nbPages = 960),
+        Book(isbn = "978-0-20-183595-3", title = "The Mythical", nbPages = 336)
     )
 
     /**

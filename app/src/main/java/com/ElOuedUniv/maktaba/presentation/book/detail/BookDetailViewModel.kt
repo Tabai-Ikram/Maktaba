@@ -16,7 +16,7 @@ class BookDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val isbn: String = checkNotNull(savedStateHandle["isbn"])
-    
+
     private val _uiState = MutableStateFlow(BookDetailUiState())
     val uiState = _uiState.asStateFlow()
 

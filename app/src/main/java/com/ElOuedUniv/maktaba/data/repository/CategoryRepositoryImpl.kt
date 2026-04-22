@@ -11,21 +11,11 @@ import javax.inject.Inject
 class CategoryRepositoryImpl @Inject constructor() : CategoryRepository {
 
     private val _categoriesList = listOf(
-        Category(
-            id = "1",
-            name = "Programming",
-            description = "Books about software development and coding"
-        ),
-        Category(
-            id = "2",
-            name = "Algorithms",
-            description = "Books about algorithms and data structures"
-        ),
-        Category(
-            id = "3",
-            name = "Databases",
-            description = "Books about database design and management"
-        )
+        Category(id = "1", name = "Programming",  description = "Books about software development and coding",    iconRes = android.R.drawable.ic_menu_edit),
+        Category(id = "2", name = "Algorithms",   description = "Books about algorithms and data structures",    iconRes = android.R.drawable.ic_menu_sort_by_size),
+        Category(id = "3", name = "Databases",    description = "Books about database design and management",   iconRes = android.R.drawable.ic_menu_agenda),
+        Category(id = "4", name = "Mathematics",  description = "Pure and applied mathematics",                 iconRes = android.R.drawable.ic_menu_compass),
+        Category(id = "5", name = "Networks",     description = "Computer networks and security",               iconRes = android.R.drawable.ic_menu_share),
     )
 
     private val categoriesFlow = MutableSharedFlow<List<Category>>(replay = 1).apply {

@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.ElOuedUniv.maktaba.presentation.navigation.NavGraph
+import com.ElOuedUniv.maktaba.navigation.NavGraph
 import com.ElOuedUniv.maktaba.presentation.theme.MaktabaTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MaktabaTheme {
                 NavGraph()
+
             }
         }
     }

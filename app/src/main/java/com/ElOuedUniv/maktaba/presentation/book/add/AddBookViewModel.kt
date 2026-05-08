@@ -1,17 +1,23 @@
 package com.ElOuedUniv.maktaba.presentation.book.add
 
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ElOuedUniv.maktaba.data.model.Book
 import com.ElOuedUniv.maktaba.domain.usecase.AddBookUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddBookViewModel @Inject constructor(
-    private val addBookUseCase: AddBookUseCase
+    private val addBookUseCase: AddBookUseCase,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
     
     private val _uiState = MutableStateFlow(AddBookUiState())
@@ -30,6 +36,9 @@ class AddBookViewModel @Inject constructor(
             is AddBookUiAction.OnPagesChange -> {
                 _uiState.update { it.copy(nbPages = action.pages) }
                 validateInputs()
+            }
+            is AddBookUiAction.OnImagePicked -> {
+                _uiState.update { it.copy(imageUri = action.uri) }
             }
             AddBookUiAction.OnAddClick -> {
                 if (_uiState.value.isFormValid) {
@@ -60,13 +69,25 @@ class AddBookViewModel @Inject constructor(
     }
 
     private fun addBook() {
-        val currentState = _uiState.value
-        val book = Book(
-            isbn = currentState.isbn,
-            title = currentState.title,
-            nbPages = currentState.nbPages.toIntOrNull() ?: 0
-        )
-        addBookUseCase(book)
-        _uiState.update { it.copy(isSuccess = true) }
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                val currentState = _uiState.value
+                val imageBytes = currentState.imageUri?.let { uri ->
+                    context.contentResolver.openInputStream(uri)?.use { it.readBytes() }
+                }
+
+                val book = Book(
+                    isbn = currentState.isbn,
+                    title = currentState.title,
+                    nbPages = currentState.nbPages.toIntOrNull() ?: 0
+                )
+                
+                addBookUseCase(book, imageBytes)
+                _uiState.update { it.copy(isSuccess = true, isLoading = false) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
+            }
+        }
     }
 }

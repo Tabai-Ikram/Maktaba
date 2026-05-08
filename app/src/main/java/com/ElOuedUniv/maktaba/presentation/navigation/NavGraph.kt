@@ -13,11 +13,12 @@ import com.ElOuedUniv.maktaba.presentation.onboarding.OnboardingView
 
 @Composable
 fun NavGraph(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    startDestination: String = Screen.Onboarding.route
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Onboarding.route
+        startDestination = startDestination
     ) {
         composable(Screen.Onboarding.route) {
             OnboardingView(
@@ -39,8 +40,12 @@ fun NavGraph(
             )
         }
         
-        composable(Screen.BookDetail.route) {
-            BookDetailView(onBackClick = { navController.popBackStack() })
+        composable(Screen.BookDetail.route) { backStackEntry ->
+            val isbn = backStackEntry.arguments?.getString("isbn") ?: ""
+            BookDetailView(
+                isbn = isbn,
+                onBackClick = { navController.popBackStack() }
+            )
         }
         
         composable(Screen.CategoryList.route) {

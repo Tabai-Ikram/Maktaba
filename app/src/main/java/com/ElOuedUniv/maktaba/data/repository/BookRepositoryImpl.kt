@@ -10,20 +10,11 @@ import javax.inject.Inject
 
 class BookRepositoryImpl @Inject constructor() : BookRepository {
 
-    private val _booksList = mutableListOf(
-        Book(isbn = "9780132350884", title = "Clean Code", nbPages = 464, imageUrl = "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg"),
-        Book(isbn = "9780201616224", title = "The Pragmatic Programmer", nbPages = 352, imageUrl = "https://covers.openlibrary.org/b/isbn/9780201616224-L.jpg"),
-        Book(isbn = "9780201633610", title = "Design Patterns", nbPages = 395, imageUrl = "https://covers.openlibrary.org/b/isbn/9780201633610-L.jpg"),
-        Book(isbn = "9780201485677", title = "Refactoring", nbPages = 461, imageUrl = "https://covers.openlibrary.org/b/isbn/9780201485677-L.jpg"),
-        Book(isbn = "9780596007126", title = "Head First Design Patterns", nbPages = 694, imageUrl = "https://covers.openlibrary.org/b/isbn/9780596007126-L.jpg")
-    )
+    private val _booksList = mutableListOf<Book>()
 
-    private val booksFlow = MutableSharedFlow<List<Book>>(replay = 1).apply {
-        tryEmit(_booksList.toList())
-    }
+    private val booksFlow = MutableSharedFlow<List<Book>>(replay = 1)
     
     override fun getAllBooks(): Flow<List<Book>> = flow {
-        delay(2000) // Simulate delay
         emitAll(booksFlow)
     }
 
@@ -31,7 +22,8 @@ class BookRepositoryImpl @Inject constructor() : BookRepository {
         return _booksList.find { it.isbn == isbn }
     }
 
-    override fun addBook(book: Book) {
+    // تصحيح: إضافة المعاملات الجديدة وتعديل النوع ليكون suspend
+    override suspend fun addBook(book: Book, imageBytes: ByteArray?) {
         _booksList.add(book)
         booksFlow.tryEmit(_booksList.toList())
     }
